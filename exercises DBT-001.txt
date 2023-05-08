@@ -1,0 +1,376 @@
+use pune;
+create table SEMP(
+  EMPNO char(4),
+  EMPNAME char(20),
+  BASICSAL float,
+  DEPTNO  char(2),
+DEPTHEAD char(4)
+); 
+
+insert into SEMP(EMPNO ,EMPNAME,BASICSAL,DEPTNO) 
+values('0001','SUNIL',6000 ,'10'),
+('0002','HIREN',8000 ,'20'),
+('0003','ALI',4000,'10'),
+('0004','GEORGE',6000,null);
+
+create table SDEPT(
+ DEPTNO  char(2),
+DEPTNAME char(15)
+);
+
+
+insert into SDEPT values('10','Development'),('20','Training');
+
+
+==============================================================================
+create table Supplier(
+`S#` char(2) primary key,
+Sname  varchar(10),
+Status int,
+City  varchar(20));
+
+insert into Supplier values
+('S1','Smith', 20,'London'),
+ ('S2','Jones',10 ,'Paris'),
+('S3','Blake', 30,'Paris'),
+('S4','Clark', 20,'London'),
+('S5','Adams', 30,'Athens');
+
+===================================================================================
+
+create table Parts(
+`P#` char(2) primary key,
+Pname  varchar(10),
+Color  varchar(10),
+Weight float,
+City  varchar(20));
+
+insert into Parts values ('P1','Nut','Red',12 ,'London'),
+                         ('P2','Bolt','Green', 17,'Paris'),
+                         ('P3','Screw','Blue',17 ,'Rome'),  
+                         ('P4','Screw','Red ', 14,'London'),
+                         ('P5','Camt','Blue',12 ,'Paris'),
+                         ('P6','Cog','Red', 19,'London');
+
+==================================================================================================
+create table Projects(
+`J#` char(2) primary key,
+Jname   varchar(10),
+City varchar(20));
+
+insert into Projects values('J1','Sorter','Paris'),
+                           ('J2','Display','Rome'),
+                           ('J3','OCR','Athens'),
+                           ('J4','Console','Athens'),
+                           ('J5','RAID','London'),
+                           ('J6','EDS','Oslo'),
+                           ('J7','Tape','London');
+
+=====================================================================================================
+create table SPJ(
+`S#` char(2),
+`P#` char(2),
+`J#` char(2),
+Qty int,
+ foreign key(`S#`) references Supplier(`S#`),
+ foreign key(`P#`) references Parts(`P#`),
+ foreign key(`J#`) references Projects(`J#`));  
+
+insert into SPJ values('S1','P1','J1',200),
+                      ('S1','P1','J4',700),
+                      ('S2','P3','J1',400),
+                      ('S2','P3','J2',200),
+                      ('S2','P3','J4',200),
+                      ('S3','P3','J1',200),
+                       ('S4','P6','J3',300),
+                     ('S5','P5','J7',500),
+                     ('S3','P4','J2',500),
+                     ('S5','P6','J4',400);
+
+
+===========================================================================
+
+Q5 . Display all the data from the Supplier table.
+   
+   --> select * from Supplier;
+
+Q6  .Display only the S# and the Sname fields  from the Supplier table.
+
+   -->  select `S#` ,SNAME from Supplier;
+
+Q7   .Display the PNAME and COLOR from the Parts table for the city ="London".
+
+   -->  select PNAME ,Color from Parts where city ='London';
+
+Q8  . Display all the Suppliers from London.
+
+  --> select Sname from Supplier where city ='London';
+
+
+Q9 . Display all the Suppliers from Paris or Athens.
+
+  --> select Sname from Supplier where city in('Paris','Athens');
+
+Q10. Display all the Projects in Athens.
+
+-->  select Jname from Projects where city='Athens';
+
+Q11. Display all the Partsnames with the weight between 12 and 14(incvlusive of both).
+
+-->     select Pname ,Weight from Parts where Weight between 12 and 14;
+
+Q12 .Display all the Suppliers with a Stsus greater than equal to 20.
+
+-->  select Sname from Supplier where Status>=20;
+
+Q13.  Display all the Supplier except the Supplier from London
+
+-->     select Sname from Supplier where city!='London';
+
+
+Q14.  Display only the cities from where the Suppliers come from.
+
+-->select city from Supplier;
+
+Q15 . Assuming that the Part Weight in Grams ,Display the same in Milligrams and Kilograms.
+
+-->   select Weight*1000 as milligram ,Weight*0.01 as kilograms from Parts;
+
+==========================================================================================================================
+Exercise 2
+==========================================================================================================================
+Q1 . Display the Supplier table in the descending order of city.
+
+--> select *from Supplier order by city desc;
+
+Q2.  Display the Part table in the ascening order of city and within the city in the ascending order the Partnames.
+
+-->select Pname,city from Parts order by city,Pname;
+
+Q3.  Display all the Suppliers with the status between 10 and 20.
+
+-->select Sname from Supplier where status between 10 and 20;
+
+Q4.  Display all the Parts and their Weighjt ,which are not in the range of 10 and 15.
+   
+--> select Pname,Weight from Parts where Weight not between 10 and 15;
+
+Q5.  Display all the Part names starting with the letter 'S'.
+
+-->select Pname from Parts where Pname like'S%';
+
+Q6.  Display all the Suppliers , belonging to cities starting with the letter 'L'.
+
+-->   select Sname,city from Supplier where city like'L%';
+
+Q7. Display all the Projects ,with the third letter in  Jname as'n'.
+
+--> select *from Projects where Jname like'__n%';
+===========================================================================================================================
+Exercise 3
+===========================================================================================================================
+Q1. Display all the supplier names with te initial letter capital.
+
+-->select concat(ucase(left(sname,1)),lcase(right(sname,length(sname)-1))) from supplier;
+
+                              or
+
+    select concat(ucase(substr(sname,1,1)),lcase(substr(sname,2,length(sname)-1))) from supplier;
+
+
+Q2. Display all the supplier names in upper case.
+
+--> select upper(Sname) from Supplier;
+
+Q3. Dsiplay all supplier names in lower case.
+
+-->select lower(sname) from supplier;
+
+Q4. Display all the suplier names paddes to 25 charachters,with spaces on the left.
+
+-->  select lpad(sname,25,'*') from supplier;
+
+Q5. Display all the supplier names(with 'la' repllaced by'ro').
+
+-->select replace(sname ,'la','ro') from supplier;
+
+
+Q6. Implement the above command such that 'I' is replaced with 'r' and ''a' is replaced with 'o'.
+
+-->select replace(replace(sname,'I','r'),'a','o') from supplier;
+
+
+Q7. Display the supplier names and the lengths of names.
+
+-->select sname , length(sname) from supplier;
+
+Q8 .Use the soundex function to search for a supplier by the name of 'BLOKE'.
+
+--> select soundex('blake'), soundex('Bloke') ;
+
+Q9 .Display thye supplier name and the Status (as. Ten,Twenty,Thirty,etc)
+
+--> select sname ,replace(replace(replace(status ,10,'Ten'),20,'Twenty'),30,'Thirty') from supplier;
+
+
+Q10. Display the current day.
+
+-->select date_format(curdate(),'%W');
+
+==========================================================================================================================
+Exercise 4
+==========================================================================================================================
+
+Q1 . Display the minimum Status in the supplier table .
+
+-->select min(Status)  from supplier;
+
+Q2. Display the maximum Weight in the Parts table.
+
+--> select max(weight) from parts;
+
+Q3. Display the average Weight of the parts.
+
+--> select avg(weight) from parts;
+
+Q4. Display the total Quantity sold for part 'P1'.
+
+--> select sum(Qty) as TotalQty from SPJ where `P#`='P1';
+
+
+Q5. Display the total Quantity sold for each part.
+
+--> select `S#`,`P#`,`J#`,sum(Qty) as TotalQty from SPJ group by `S#`,`P#`,`J#`;
+
+Q6. Display the average Quantity sold for each part.
+
+--> select `P#` ,avg(qty) from spj group by `P#`;
+ 
+Q8. Display the status and the count of suppliers with that status.
+
+-->select Status ,count(Sname) from supplier group by Status;
+
+Q9 . Display the count of projects going in the different cities.
+
+ -->  select city ,count(jname) from projects group by city;
+
+
+Q10. What is the difference between count(status) and count(*).
+
+--> COUNT(status) will count the rows in a particular status column and
+     COUNT(*) will count the rows of whole table.
+
+Q11 . 
+
+
+
+--> select status ,count(status) count,
+     case
+     when status=10 then 'Ten'
+     when status=20 then 'Twenty'
+     when status =30 then 'Thirty'
+     else 'other'
+     end status
+     from supplier group by status;
+
+==========================================================================================================
+Exercise 5
+=========================================================================================================
+Q1 .Display Supplier name and Quantity sold.
+
+-->  select sname ,sum(Qty) from spj as j ,supplier as s where s.`S#`=j.`S#` group by sname;
+
+Q2. Display the part name and Qty sold.
+
+-->select pname ,sum(qty) as totalQty from spj as j ,parts as p where p.`P#`=j.`P#` group by pname;
+
+Q3. Display tha Projects name and Quantity sold.
+
+-->select jname ,sum(Qty) as totalQtySold from spj as j ,projects as p where p.`J#`=j.`J#` group by jname;
+
+Q4. Display the Supplier name ,Part name ,projects name and Quantity sold.
+
+-->
+
+Q5 . Display the Supplier name,Supplying parts to a project in the same city.
+
+-->select distinct(sname) ,pname   from projects as j,parts as p,supplier as s where s.city=j.city;
+
+Q6.Display the part name that is'Red' in color ,and the Quantity sold.
+
+-->select pname ,sum(qty) as totalqtySold from spj ,parts p where p.`P#`=spj.`P#` && color ='Red' group by pname;
+
+Q7. Display all the quantity sold by suppliers with the status =20.
+ 
+--> select sum(qty)as totalQty ,sname from spj , supplier s where s.`S#`=spj.`S#` && status=20 group by sname; 
+
+Q8 .Display all the parts and quantity with a weight >14.
+
+-->select pname ,sum(qty) as total from spj ,parts p where spj.`P#`=p.`P#` and weight>14 group by pname;
+
+Q9 . Display all the Project names and city ,which has bought more than 500 parts.
+
+-->select jname ,city,qty as total from spj ,projects p where p.`J#`=spj.`P#`&& qty>500 ; 
+
+Q10 . Display all the parts names and quantity sold that have a weight less than 15.
+
+--> select pname ,sum(qty) Qtysold from spj ,parts p where p.`P#`=spj.`P#` && weight<15 group by pname;
+
+Q11.Display all the employee names and the name of their managers.
+
+--> select a.ename ,b.ename from emp a,emp b where a.ename =b.mgr;
+
+=============================================================================================================
+Exercise 6
+=============================================================================================================
+Q1. Display all the Suppliers with the same Status as the supplier ,'Clark'.
+
+--> select *from supplier where status =
+    (select status from supplier where sname='Clark');
+
+Q2. Display all the employees in the same department as the employee 'MILLER'.
+
+-->
+
+Q3. Display all the parts which have more Weight than all red parts.
+
+-->  select  distinct pname  , weight from parts where weight >any
+     (select weight  from parts where color ='Red'); 
+
+Q4. Display all the projects going on in the same city as the projects 'TAPE'.
+
+--> select * from projects where city in
+   ( select city from projects where jname='TAPE');   
+
+
+Q5. Display all the parts with weight less than all the Green Parts .
+
+--> select pname,weight from parts where  weight < any
+    (select weight from parts where color='Green');
+
+Q6. Display the name of the supplier who has sold the maximum Quantity 
+   (in one sale).
+
+-->select sname from supplier where `S#`= 
+   (select `S#`,max(qty) from spj group by `S#`);
+
+Q7.Display the name of the Employee with the minimum salary.
+
+--> select empname,basicsal from semp where basicsal=
+    (select min(basicsal) from semp);
+
+Q8. Display the name of the Supplier who has sold the maximum overall Quantity 
+     (sum of Sales).
+   
+--> select sname from supplier where `S#`=
+   (select 'S#` ,sum(qty) as sum from spj where sum=
+   ( select max(sum) from spj));
+
+Q9. Display the name of department with the maximum number of Employees.
+
+--> 
+         select count(deptno)  as c from semp where  count(deptno)=
+    (select max(c) from semp deptno);
+
+
+ select count(deptno) as ' counter'from semp having count(deptno)>1 && max(counter);
